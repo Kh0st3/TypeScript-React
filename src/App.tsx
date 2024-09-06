@@ -1,7 +1,8 @@
 import { useState } from "react";
 import FormAddTodo from "./components/FormAddTodo";
+import Todos from "./components/Todos";
 
-interface Todo {
+export interface Todo {
   text: string;
   complete: boolean;
 }
@@ -27,25 +28,38 @@ const App = () => {
       complete: false,
     };
     setTodos([...todos, newTodo]);
-  }
+  };
+
+  const toggleTodo = (selectedTodo: Todo) => {
+    setTodos(prevTodos => {
+      return prevTodos.map(todo => {
+        if (todo.text === selectedTodo.text) {
+          return {
+            ...todo, 
+            complete:!todo.complete
+          }
+        }
+        return todo;
+      })
+    });
+};
+
+const removeTodo = (selectedTodo: Todo) => {
+  setTodos((prevTodos) => { 
+    return prevTodos.filter((todo) => todo !== selectedTodo);
+  });
+};
 
   return (
     <div className="container">
       <h1>Todo</h1>
       <FormAddTodo addTodo={addTodo}/>
       <div>
-        {todos.map((todo) =>(
-          <article key={todo.text}>
-            <label htmlFor="todo">
-              <input 
-                type="checkbox" 
-                checked={todo.complete}
-                id="todo" 
-              />
-              {todo.text}
-            </label>
-          </article>
-        ))}
+        <Todos 
+          todos={todos}
+          toggleTodo={toggleTodo}
+          removeTodo={removeTodo}
+        />  
       </div>
     </div>
   );

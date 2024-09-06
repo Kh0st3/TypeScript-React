@@ -1,0 +1,25 @@
+import { Todo } from "../App";
+import TodoItem from "./TodoItem";
+
+interface Props {
+    todos: Todo[];
+    toggleTodo: (selectedTodo: Todo) => void;
+    removeTodo: (selectedTodo: Todo) => void;  // Add this prop to remove a todo.
+}
+
+const Todos = ({todos, toggleTodo, removeTodo}: Props) => {
+  return (
+    <>
+        {todos.map((todo) =>(
+          <TodoItem
+            key={todo.text}
+            todo={todo}
+            toggleTodo={toggleTodo}
+            removeTodo={removeTodo}
+            />
+        ))}    
+    </>
+  );
+}
+
+export default Todos;
